@@ -24,21 +24,6 @@ public class FileIO {
     }
 
     /**
-     * Prints text lines at the end of currently chosen file.
-     * 
-     * @param text Strig line to be written
-     */
-    public void print(String text) {
-        try {
-            FileWriter writer = new FileWriter(filePath, true);
-            writer.write(text + "\n");
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("There was an error:" + e.getMessage());
-        } 
-    }
-
-    /**
      * Returns the current filepath
      * 
      * @return filepath
@@ -57,6 +42,15 @@ public class FileIO {
     }
     
     /**
+     * Writes the given string to the end of currently chosen file.
+     * 
+     * @param text String line to be written
+     */
+    public void write(String text) {
+        write(filePath, text, false);
+    }
+    
+    /**
      * Writes the given string to the end of the given file.
      * 
      * If the file doesn't exist, it will be created.
@@ -65,14 +59,7 @@ public class FileIO {
      * @param text String to be written
      */
     public void write(String fileName, String text){
-        this.filePath = fileName;
-        try {
-            FileWriter writer = new FileWriter(filePath, true);
-            writer.write(text);
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("There was an error:" + e.getMessage());
-        } 
+        write(fileName, text, true);
     }     
     
     /**
@@ -85,15 +72,19 @@ public class FileIO {
      * @param text String to be written
      */
     public void overwrite(String fileName, String text){
+        write(fileName, text, false);
+    } 
+    
+    private void write(String fileName, String text, boolean append) {
         this.filePath = fileName;
         try {
-            FileWriter writer = new FileWriter(filePath, false);
-            writer.write(text);
+            FileWriter writer = new FileWriter(filePath, append);
+            writer.write(text + "\n");
             writer.close();
         } catch (IOException e) {
             System.out.println("There was an error:" + e.getMessage());
-        } 
-    } 
+        }
+    }
   
     /**
      * Reads a textfile and returns its contents as a String.
